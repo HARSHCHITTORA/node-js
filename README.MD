@@ -294,3 +294,120 @@ In Synchronous operations tasks are performed one at a time
 In Asynchronous,Second Task do not wait to finish First Task
 
 <img src="Async.png" alt="MarineGEO circle logo" style="height:50px; width:80%;"/>
+
+## Check Asynchronous
+when you run this code you can see that loginc.. runs after 2 sec but it does not wait for it and runs complete exe...
+```
+console.log("start exe...")
+
+setTimeout(() => {
+    console.log("loginc...")
+}, 2000);
+
+console.log("complete exe...")
+``` 
+
+### DrawBack of Asynchronous
+when you run this code it print 10 but the answer is 30 because b take time to execute so it print last statement.
+we handle this using callback and promises
+```
+let a=10;
+let b=0;
+
+setTimeout(() => {
+    b=20;
+}, 2000);
+
+console.log(a+b)
+
+
+```
+# Handle Asynchronous Data in Node js
+
+## using Promise
+
+If it is a complex program and give late result keep it in a promise when it resolve the result got updated.<br>
+we pass teo paramter resolve and reject.<br>
+
+
+```
+let a=10;
+let b=0;
+
+let waititngData=new Promise((resolve,reject)=>{
+    setTimeout(() => {
+        resolve(20)
+    }, 2000);
+})
+
+waititngData.then((data)=>{
+    b=data;
+    console.log(a+b)
+})
+ 
+```
+
+# How NODE JS work
+
+There is some process going on in between when code runs and output display
+
+
+<img src="loop.png" alt="MarineGEO circle logo" style="height:50vh; width:60%;"/>
+
+### call stack
+When we run the code By default *main{}* function got register in it and after it each and every function present in the code got register.
+when the function is executed fully it comes out from the stack and in last *main{}* function comes out from the stack.
+
+<img src="work1.png" alt="MarineGEO circle logo" style="height:50vh; width:60%;"/>
+
+## NODE API and CALLBACK QUEUE
+
+The function which are inherit from  c and c++ 
+they went to NODE API at the time of execution.
+<br>
+example:*SetTimeout*
+<br>
+
+REFER THIS CODE TO UNDERSTAND EXECUTIION
+```
+console.log("starting up..")
+
+setTimeout(() => {
+    console.log("2 second log")
+}, 2000);
+
+setTimeout(() => {
+    console.log("0 second log")
+}, 0);
+
+console.log("finishing up")
+```
+```
+output:
+
+starting up..
+finishing up
+0 second log
+2 second log
+```
+<img src="work2.png" alt="MarineGEO circle logo" style="height:50vh; width:60%;"/>
+<br>
+<img src="work3.png" alt="MarineGEO circle logo" style="height:50vh; width:60%;"/>
+<br>
+The SetTimeout function which take the less time go into callback queue because NODE API want empty stack so it wait till the stack is not going to empty.
+<img src="work4.png" alt="MarineGEO circle logo" style="height:50vh; width:60%;"/>
+<br>
+Finally went stack is empty setTimeout enter in the stack
+<br>
+<img src="work5.png" alt="MarineGEO circle logo" style="height:50vh; width:60%;"/>
+
+<br><br>
+<img src="express.png" alt="MarineGEO circle logo" style="height:250px; width:100%;"/>
+<br><br>
+
+# ABOUT EXPRESS JS
+
+Express is a minimal and flexible Node.js web application framework that provides a robust set of features for web and mobile applications.
+
+[SOURCE](https://expressjs.com/)
+
