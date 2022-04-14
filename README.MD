@@ -868,6 +868,141 @@ route.get('/contact',(req,res)=>{
 })
 ```
 
+# CONNECT NODE WITH MONGODB DATABASE
 
+* install mongodb 
+```
+npm install mongodb
+```
+* IMPORT {MongoClient} FROM 'mongodb'
+```
+const {MongoClient}=require('mongodb')
+```
+
+* connection url
+```
+const url='mongodb://localhost:27017'
+const client=new MongoClient(url)
+```
+* database name
+```
+const database="harsh"
+```
+* make function to connect 
+```
+async function getData()
+{
+    let result=await client.connect();
+    let db=result.db(database)
+    let collection=db.collection('items')
+    let response=await collection.find({}).toArray()
+    console.log(response);
+}
+
+```
+
+* full code
+
+```
+const {MongoClient}=require('mongodb')
+
+const url='mongodb://localhost:27017'
+const client=new MongoClient(url)
+const database="harsh"
+
+async function getData()
+{
+    let result=await client.connect();
+    let db=result.db(database)
+    let collection=db.collection('items')
+    let response=await collection.find({}).toArray()
+    console.log(response);
+}
+
+getData();
+```
+
+# Read data from mongodb
+
+* method 1
+```
+const {MongoClient}=require('mongodb')
+
+const url='mongodb://localhost:27017'
+const client=new MongoClient(url)
+const database="harsh"
+
+async function dbconnect()
+{
+    let result=await client.connect();
+    let db=result.db(database)
+    return db.collection('items')
+}
+
+dbconnect().then((res)=>{
+res.find({}).toArray().then((data)=>{
+    console.log(data)
+})
+})
+```
+* method 2
+```
+const {MongoClient}=require('mongodb')
+
+const url='mongodb://localhost:27017'
+const client=new MongoClient(url)
+const database="harsh"
+
+async function dbconnect()
+{
+    let result=await client.connect();
+    let db=result.db(database)
+    return db.collection('items')
+}
+
+
+
+
+const main= async ()=>{
+    let data=await dbconnect();
+    data=await data.find().toArray()
+    console.warn(data)
+}
+main()
+```
+
+* method 3 using common file
+
+***put this much code in other file***
+
+```
+const {MongoClient}=require('mongodb')
+
+const url='mongodb://localhost:27017'
+const client=new MongoClient(url)
+const database="harsh"
+
+async function dbconnect()
+{
+    let result=await client.connect();
+    let db=result.db(database)
+    return db.collection('items')
+}
+
+module.exports=dbconnect;
+```
+
+* import the file
+
+```
+const dbconnect=require("./mongodb.js")
+
+const main= async ()=>{
+    let data=await dbconnect();
+    data=await data.find().toArray()
+    console.warn(data)
+}
+main()
+```
 
 
