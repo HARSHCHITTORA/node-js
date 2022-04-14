@@ -411,3 +411,598 @@ Express is a minimal and flexible Node.js web application framework that provide
 
 [SOURCE](https://expressjs.com/)
 
+## How to install Express
+```
+npm install express
+```
+
+## How to do routing using express
+app.get(), on the other hand, is part of Express' application routing and is intended for matching and handling a specific route when requested with the GET HTTP verb:
+* GET /
+```
+const express= require('express')
+const app=express()
+
+app.get('',(req,res)=>{
+  res.send("hello, this is home page")
+})
+
+app.get('/about',(req,res)=>{
+    res.send("hello, this is aout page")
+  })
+
+  app.listen(5000)
+```
+
+## ROUTING
+ 
+ #### WHAT IS req,res
+
+ REQUEST:-If data came from client side then it is gone in request parameter.
+
+ RESPONSE:- If data send by us then it  goes in response parameter
+ <img src="res.png" alt="MarineGEO circle logo" style="height:250px; width:90%;"/>
+<br><br>
+
+* RESPONSE EXAMPLE
+
+ ```
+ app.get('',(req,res)=>{
+  res.send("hello, this is home page")
+})
+ ```
+
+ * REQUEST EXAMPLE
+
+```
+how to get this request of client
+
+http://localhost:5000/?name=%22harsh%22
+```
+```
+app.get('',(req,res)=>{
+    console.log("data sent by browser",req.query.name)
+  res.send("hello "+ req.query.name)
+})
+```
+
+## HOw to render HTML Data
+
+```
+app.get('/about',(req,res)=>{
+    res.send(`
+    <input type="text" placeholder="user name"/>
+    <button>submit</button>
+    `
+    )
+  })
+  app.get('/help',(req,res)=>{
+    res.send("hello, this is hrlp page")
+  })
+```
+
+## How to show JSON data
+
+```
+ app.get('/help',(req,res)=>{
+    res.send(
+        [
+        {
+        name:'anil',
+        email:'anil@test.com'
+        },
+        {
+    name:'harsh',
+    email:'harsh@test.com'
+        }
+        ]
+)
+  })
+```
+
+## How to link pages
+
+```
+app.get('',(req,res)=>{
+  res.send(`
+  <h1>welcome to home page</h1>
+  <a href="/about">go to about page</a>`)
+})
+
+```
+
+## Make HTML pages and How to use them
+
+* Make folder for HTML file and access it
+* Make HTML files
+* Load HTML files
+
+### LOAD HTML FILES
+
+```
+const express=require('express')
+const path=require('path')
+
+const app=express(); //executable function
+const publicPath=path.join(__dirname,'public')
+console.log(publicPath)
+
+app.use(express.static(publicPath))
+app.listen(5000)
+```
+
+* keep file name index it automatically became root file
+
+**INTERVIEW QUESTION**
+
+---
+*Q1) Why we include path module ?*
+
+Ans) We include path module to know our folder location in the directory so that we can load static files and content.
+
+*Q2) What static method do ?*
+
+Ans) Load static content or method.
+
+*Q3)If you write css in the folder in which static HTML files are present then  we can aplly css?*
+
+ANS) No,we can't able to apply.because your path came from index.html
+
+---
+
+ ## HOw to remove .html extention
+
+  * Talking about this
+ ```
+ http://localhost:5000/help.html
+ ``` 
+
+ we  remove this for security purpose.we do not want user get to know that in which technology our website is made on.
+
+
+  **APPLY GET METHOD**
+
+int this we use get method which we learn initially int this we give routing name eg. /about
+and givers the path of the html file.
+<br>
+Due to which when we write only /about file open on about.html.
+
+```
+const express=require('express')
+const path=require('path')
+
+const app=express(); //executable function
+const publicPath=path.join(__dirname,'public')
+console.log(publicPath)
+
+app.get('',(req,res)=>
+{
+    res.sendFile(`${publicPath}/index.html`)
+})
+app.get('/about',(req,res)=>
+{
+    res.sendFile(`${publicPath}/about.html`)
+})
+app.get('/help',(req,res)=>
+{
+    res.sendFile(`${publicPath}/help.html`)
+})
+app.listen(5000) 
+
+```
+
+ ## Making 404 page
+Just type '*' in route name
+<br>
+if type wrong file name it automatically redirect to this file
+
+ ```
+ app.get('*',(req,res)=>
+{
+    res.sendFile(`${publicPath}/404.html`)
+})
+ ```
+
+ # TEMPELATE ENGINE
+
+ It is basically used to make dynamic pages
+
+ A template engine enables you to use static template files in your application. At runtime, the template engine replaces variables in a template file with actual values, and transforms the template into an HTML file sent to the client. This approach makes it easier to design an HTML page.<br>
+ [source](https://expressjs.com/en/guide/using-template-engines.html#:~:text=A%20template%20engine%20enables%20you,to%20design%20an%20HTML%20page.)
+
+**DYNAMIC PAGES:**
+
+HTML PAGES IN WHICH DATA REMAINS CONSANT THIS PAGE KNOWN AS STATIC PAGES.
+<BR>
+BUT WHEN THE DATA CAME FROM THE DATABASE THEN THEY BECAME DYNAMIC PAGES
+
+* WE use ejs template engine
+ 
+* make folder name views
+
+* write this 
+
+Because we want to tell node js that we use ejs engine
+
+ejs : name of engine
+view engine: that we use view engine
+
+```
+app.set('view engine','ejs')
+```
+
+* make profile.ejs file in views folder
+
+* we have to render profile.ejs
+
+```
+app.get('/profile',(req,res)=>
+{
+    res.render(`profile.ejs`)
+})
+```
+
+**how to get dynamic**
+
+```
+app.get('/profile',(req,res)=>
+{   const user={
+    name:'harsh',
+    email:'harsh@test.com',
+    city:'kota'
+}
+    res.render(`profile`,{user})
+})
+```
+
+* how to use user data in  profile.ejs  
+
+```
+<%= user.name%>
+```
+* its syntax is
+
+```
+<%= %>
+```
+
+## DYNAMIC PAGE
+
+**HOW TO MAKE LOOP IN ejs**
+
+```
+app.get('/profile',(req,res)=>
+{   const user={
+    name:'harsh',
+    email:'harsh@test.com',
+    city:'kota',
+    skills:['php','js','c++']
+
+}
+    res.render(`profile`,{user})
+})
+```
+
+* how to use loop
+
+```
+<ul>
+        <%  user.skills.forEach((item)=>{%>
+          <li>
+              <%= item%>
+          </li>
+       <% }) %>
+</ul>
+```
+
+## How to make common header
+
+* this only works for ejs file which are present in views
+* make folder name common
+
+* make one header.ejs in common folder
+
+* how to include in pages
+<br>
+use tag
+```
+ <%- %>
+```
+
+eg.
+```
+ <%-include('common/header')%>
+```
+
+# Middleware
+To filter response and request.<br>
+At the time of authentication
+
+Middleware functions are functions that have access to the request object ( req ), the response object ( res ), and the next middleware function in the application's request-response cycle. The next middleware function is commonly denoted by a variable named next .
+
+[source](https://expressjs.com/en/guide/using-middleware.html#:~:text=Middleware%20functions%20are%20functions%20that,by%20a%20variable%20named%20next%20.)
+
+
+## How to work with middleware
+
+* Apllication-level middleware
+
+work on each an every routes
+
+```
+const reqFilter=(req,res,next)=>{
+    if(!req.query.age)
+    {
+         res.send("please provide age")
+    }
+    else if(req.query.age<18)
+    {
+         res.send("you cannot acees this page")
+    }
+    else{
+    next();
+        }
+}
+
+app.use(reqFilter)
+```
+
+## Types of Middleware
+
+* Apllication-level middleware
+* Router-level middleware
+* Error-handling middleware
+* Built-in middleware
+* Third-party middleware
+
+ 
+# Route Level Middleware
+
+When we want to use middleware on perticular Route,or group or route.
+
+* Apply middleware on single routes
+* make middleare in different file
+* Apply Middleware in the group of route
+
+**Apply middleware on single routes**
+
+
+create middelware
+```
+const reqFilter=(req,res,next)=>{
+    if(!req.query.age)
+    {
+         res.send("please provide age")
+    }
+    else if(req.query.age<18)
+    {
+         res.send("you cannot acees this page")
+    }
+    else{
+    next();
+        }
+}
+
+```
+add middleware in single route
+
+```
+app.get('/',(req,res)=>{
+    res.send('welcome')
+
+})
+
+app.get('/users',reqFilter,(req,res)=>{
+    res.send('welcome to users page')
+})
+
+app.get('/about',reqFilter,(req,res)=>{
+    res.send('welcome to about page')
+})
+```
+
+## How to use middleware with external file
+
+* make external file name middleware
+```
+module.exports= reqFilter=(req,res,next)=>{
+    if(!req.query.age)
+    {
+         res.send("please provide age")
+    }
+    else if(req.query.age<18)
+    {
+         res.send("you cannot acees this page")
+    }
+    else{
+    next();
+        }
+}
+
+```
+
+* add in express9.js
+
+```
+const express=require('express')
+const reqFilter=require('./middleware')
+
+const app=express();
+
+
+app.get('/',(req,res)=>{
+    res.send('welcome')
+
+})
+
+app.get('/users',reqFilter,(req,res)=>{
+    res.send('welcome to users page')
+})
+
+app.get('/about',reqFilter,(req,res)=>{
+    res.send('welcome to about page')
+})
+
+app.listen(5000)
+```
+
+* if you do not want to add **reqFilter** in each route then do this 
+
+use
+```
+const route=express.Router()
+
+route.use(reqFilter)
+```
+
+now for use in route
+
+in which you want to add middleware
+```
+route.get('/about',(req,res)=>{
+    res.send('welcome to about page')
+})
+
+route.get('/contact',(req,res)=>{
+    res.send('welcome to contact page')
+})
+```
+
+# CONNECT NODE WITH MONGODB DATABASE
+
+* install mongodb 
+```
+npm install mongodb
+```
+* IMPORT {MongoClient} FROM 'mongodb'
+```
+const {MongoClient}=require('mongodb')
+```
+
+* connection url
+```
+const url='mongodb://localhost:27017'
+const client=new MongoClient(url)
+```
+* database name
+```
+const database="harsh"
+```
+* make function to connect 
+```
+async function getData()
+{
+    let result=await client.connect();
+    let db=result.db(database)
+    let collection=db.collection('items')
+    let response=await collection.find({}).toArray()
+    console.log(response);
+}
+
+```
+
+* full code
+
+```
+const {MongoClient}=require('mongodb')
+
+const url='mongodb://localhost:27017'
+const client=new MongoClient(url)
+const database="harsh"
+
+async function getData()
+{
+    let result=await client.connect();
+    let db=result.db(database)
+    let collection=db.collection('items')
+    let response=await collection.find({}).toArray()
+    console.log(response);
+}
+
+getData();
+```
+
+# Read data from mongodb
+
+* method 1
+```
+const {MongoClient}=require('mongodb')
+
+const url='mongodb://localhost:27017'
+const client=new MongoClient(url)
+const database="harsh"
+
+async function dbconnect()
+{
+    let result=await client.connect();
+    let db=result.db(database)
+    return db.collection('items')
+}
+
+dbconnect().then((res)=>{
+res.find({}).toArray().then((data)=>{
+    console.log(data)
+})
+})
+```
+* method 2
+```
+const {MongoClient}=require('mongodb')
+
+const url='mongodb://localhost:27017'
+const client=new MongoClient(url)
+const database="harsh"
+
+async function dbconnect()
+{
+    let result=await client.connect();
+    let db=result.db(database)
+    return db.collection('items')
+}
+
+
+
+
+const main= async ()=>{
+    let data=await dbconnect();
+    data=await data.find().toArray()
+    console.warn(data)
+}
+main()
+```
+
+* method 3 using common file
+
+***put this much code in other file***
+
+```
+const {MongoClient}=require('mongodb')
+
+const url='mongodb://localhost:27017'
+const client=new MongoClient(url)
+const database="harsh"
+
+async function dbconnect()
+{
+    let result=await client.connect();
+    let db=result.db(database)
+    return db.collection('items')
+}
+
+module.exports=dbconnect;
+```
+
+* import the file
+
+```
+const dbconnect=require("./mongodb.js")
+
+const main= async ()=>{
+    let data=await dbconnect();
+    data=await data.find().toArray()
+    console.warn(data)
+}
+main()
+```
+
+
