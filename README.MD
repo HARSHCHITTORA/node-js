@@ -1,4 +1,4 @@
-<img src="node.png" alt="MarineGEO circle logo" style="height:150px; width:100%;"/>
+<img src="./IMAGES/node.png" alt="MarineGEO circle logo" style="height:150px; width:100%;"/>
 <br><br>
 
 <h1 align="center">NODE JS</h1>
@@ -288,12 +288,12 @@ ANS) Buffer simply means temporary memory location.when we create file the node 
 ## Synchronous
 In Synchronous operations tasks are performed one at a time
 
-<img src="Sync.png" alt="MarineGEO circle logo" style="height:50px; width:80%;"/>
+<img src="./IMAGES/Sync.png" alt="MarineGEO circle logo" style="height:50px; width:80%;"/>
 
 ## Asynchronous
 In Asynchronous,Second Task do not wait to finish First Task
 
-<img src="Async.png" alt="MarineGEO circle logo" style="height:50px; width:80%;"/>
+<img src="./IMAGES/Async.png" alt="MarineGEO circle logo" style="height:50px; width:80%;"/>
 
 ## Check Asynchronous
 when you run this code you can see that loginc.. runs after 2 sec but it does not wait for it and runs complete exe...
@@ -352,13 +352,13 @@ waititngData.then((data)=>{
 There is some process going on in between when code runs and output display
 
 
-<img src="loop.png" alt="MarineGEO circle logo" style="height:50vh; width:60%;"/>
+<img src="./IMAGES/loop.png" alt="MarineGEO circle logo" style="height:50vh; width:60%;"/>
 
 ### call stack
 When we run the code By default *main{}* function got register in it and after it each and every function present in the code got register.
 when the function is executed fully it comes out from the stack and in last *main{}* function comes out from the stack.
 
-<img src="work1.png" alt="MarineGEO circle logo" style="height:50vh; width:60%;"/>
+<img src="./IMAGES/work1.png" alt="MarineGEO circle logo" style="height:50vh; width:60%;"/>
 
 ## NODE API and CALLBACK QUEUE
 
@@ -390,19 +390,19 @@ finishing up
 0 second log
 2 second log
 ```
-<img src="work2.png" alt="MarineGEO circle logo" style="height:50vh; width:60%;"/>
+<img src="./IMAGES/work2.png" alt="MarineGEO circle logo" style="height:50vh; width:60%;"/>
 <br>
-<img src="work3.png" alt="MarineGEO circle logo" style="height:50vh; width:60%;"/>
+<img src="./IMAGES/work3.png" alt="MarineGEO circle logo" style="height:50vh; width:60%;"/>
 <br>
 The SetTimeout function which take the less time go into callback queue because NODE API want empty stack so it wait till the stack is not going to empty.
-<img src="work4.png" alt="MarineGEO circle logo" style="height:50vh; width:60%;"/>
+<img src="./IMAGES/work4.png" alt="MarineGEO circle logo" style="height:50vh; width:60%;"/>
 <br>
 Finally went stack is empty setTimeout enter in the stack
 <br>
-<img src="work5.png" alt="MarineGEO circle logo" style="height:50vh; width:60%;"/>
+<img src="./IMAGES/work5.png" alt="MarineGEO circle logo" style="height:50vh; width:60%;"/>
 
 <br><br>
-<img src="express.png" alt="MarineGEO circle logo" style="height:250px; width:100%;"/>
+<img src="./IMAGES/express.png" alt="MarineGEO circle logo" style="height:250px; width:100%;"/>
 <br><br>
 
 # ABOUT EXPRESS JS
@@ -441,7 +441,7 @@ app.get('/about',(req,res)=>{
  REQUEST:-If data came from client side then it is gone in request parameter.
 
  RESPONSE:- If data send by us then it  goes in response parameter
- <img src="res.png" alt="MarineGEO circle logo" style="height:250px; width:90%;"/>
+ <img src="./IMAGES/res.png" alt="MarineGEO circle logo" style="height:250px; width:90%;"/>
 <br><br>
 
 * RESPONSE EXAMPLE
@@ -1005,4 +1005,512 @@ const main= async ()=>{
 main()
 ```
 
+# inser data in mongodb from node js
 
+* import file ./mongodb.js
+* then create a insert function in which write insert command in  database
+
+```
+const dbconnect=require('./mongodb.js')
+
+ const insert=async ()=>{
+     const db=await dbconnect();
+     const result = await db.insertMany(
+        [ 
+            {name:"note 5",brand:'vivo',price:320,category:'mobile'},
+            {name:'note 6',brand:'samsung',price:340,category:'mobile'},
+            {name:'asjnaskj',brand:'sdf',price:340,category:'smartphone'},
+        ]
+        )
+         console.log(result.acknowledged)
+         {
+             console.log("data inserted")
+         }
+ }
+
+ insert()
+
+```
+# update data in mongodb from node js
+
+
+```
+const dbconnect=require("./mongodb.js")
+
+const update=async ()=>{
+    const db=await dbconnect()
+    const result=await db.updateOne(
+        {name:'note 5'},{
+            $set:{name:"max pro 5"}
+        }
+    )
+}
+update()
+```
+
+# delete data in mongodb from node js
+
+```
+
+const dbconnect=require("./mongodb.js")
+
+ const delete_=async ()=>{
+         const db=await dbconnect()
+         const result=await db.deleteOne({name:"priyansh"})
+         console.warn(result)
+ }
+
+delete_()
+
+```
+# API WITH MONGODB
+
+
+ ## GET API METHOD
+WHEN WE WANT TO READ DATA THROUGH API THEN WE USE GET METHOD
+
+* create file API1.js
+* require express
+* require ./mongodb.js
+* fetch data from database 
+* print that on page
+
+```
+const express = require("express");
+const dbconnect=require('./mongodb.js')
+
+const app=express()
+
+app.get('/',async (req,res)=>{
+      let data=await dbconnect()
+      data=await data.find().toArray()
+      console.log(data);
+      res.send(data)
+})
+
+
+app.listen(5000)
+
+
+
+```
+
+---
+QUES) CAN WE PASS BODY IN GET METHOD
+ANS) NO
+
+---
+
+## pOST API METHOD 
+
+WHEN WE WANT TO SAVE NEW DATA ON DATABASE THROUGH API THEN WE USE POST DATA
+
+* how to fetch api send with post man
+```
+const { response } = require("express");
+const express = require("express");
+const dbconnect=require('./mongodb.js')
+
+const app=express()
+
+app.use(express.json())
+
+app.post('/',(req,res)=>{
+    console.log(req.body)
+    res.send(req.body)
+
+})
+
+app.listen(5000)
+
+
+```
+
+**app.use(express.json())**
+
+* It parses incoming JSON requests and puts the parsed data in **req.body**
+
+*  parse JSON, it means we are converting the string into a JSON object by following the JSON specification, where we can then use it in any way we wish. Before parsing JSON, you only have a regular string that you cannot access the data encoded within.
+
+## how to save in monbgodb
+
+```
+app.post('/',async (req,res)=>{
+    
+    let data=await dbconnect()
+    let result=await data.insertOne(req.body)
+    res.send(result)
+
+})
+
+```
+
+# nODE JS PUT API METHOD
+
+When we want to update data with API then we use PUT method
+
+* use post men to send updated data 
+* you can directly use consition here also or 
+* you can take consition from postman also
+
+```
+app.put("/",async (req,res)=>{
+    let data=await dbconnect()
+    let result=await data.updateOne(
+        //{name:"peter"},
+        {name:req.body.name},
+        //{$set:{price:678}}
+        {$set:req.body}
+        )
+  res.send({result:"updated"})
+})
+
+
+```
+
+**how to use parameter**
+
+```
+
+app.put("/:name",async (req,res)=>{
+    let data=await dbconnect()
+    let result=await data.updateOne(
+        
+        {name:req.params.name},
+        
+        {$set:req.body}
+        )
+  res.send({result:"updated"})
+})
+
+
+```
+```
+http://localhost:5000/peter
+
+```
+* here peter is parameter which is name so in routes also we need to change so we write "/:name"
+
+* and in place of body we need to write params
+
+# delete using api
+
+* in this we take help of object_id
+* for this we need to make instance of mongodb
+
+```
+const mongodb=require('mongodb')
+```
+* here we need to make instance of object_id
+```
+const result=data.deleteOne({_id:new mongodb.ObjectId(req.params.id)})
+``` 
+```
+const express = require("express");
+const mongodb=require('mongodb')
+const dbconnect=require('./mongodb.js')
+
+const app=express()
+
+app.use(express.json())
+
+app.delete("/:id",async(req,res)=>{
+    console.log(req.params.id)
+    const data=await dbconnect();
+    const result=data.deleteOne({_id:new mongodb.ObjectId(req.params.id)})
+    res.send(result)
+})
+app.listen(5000)
+```
+
+# Start with mongoose
+
+it npm package to connect node with mongodb
+
+* i helps to stop extra field to enter 
+
+* using Schema we can restrict the field
+
+*  A Mongoose schema defines the structure of the document, default values, validators, etc., 
+
+* Mongoose model provides an interface to the database for creating, querying, updating, deleting records, etc. 
+```
+const mongoose=require('mongoose')
+
+const main=async ()=>{
+  await mongoose.connect("mongodb://localhost:27017/harsh")
+  const itemsSchema=new mongoose.Schema({
+    name:String,
+    price:Number  
+  })
+ const itemsModel=mongoose.model('items',itemsSchema)
+ let data=new itemsModel({name:"m 8",price:1000})
+ let result=await data.save();
+ console.log(result)
+
+}
+main()
+```
+
+# CRUD OPERATION USING MONGOOSE
+
+ ## insert in db using mongoose
+
+ ```
+ const mongoose=require('mongoose')
+
+const main=async ()=>{
+  await mongoose.connect("mongodb://localhost:27017/harsh")
+  const itemsSchema=new mongoose.Schema({
+    name:String,
+    price:Number,
+    brand:String,
+    category:String  
+  })
+  
+ const itemsModel=mongoose.model('items',itemsSchema)
+ let data=new itemsModel({name:"mi 8",price:6000,brand:"mi",category:"smartphone"})
+ let result=await data.save();
+ console.log(result)
+ 
+}
+main()
+
+
+ ```
+
+ ## update in db using mongoose
+
+ ```
+ const mongoose=require('mongoose')
+
+const updateIndb=async()=>{
+    await mongoose.connect("mongodb://localhost:27017/harsh")
+    const itemsSchema=new mongoose.Schema({
+            name:String,
+            price:Number,
+            brand:String,
+            category:String  
+          })
+    const itemsModel=mongoose.model('items',itemsSchema)
+    let data=await itemsModel.updateOne(
+        {name:"note 5"},
+        {$set:{price:800,name:"note5"}}
+        )
+        console.log(data)
+}
+updateIndb()
+
+
+ ```
+
+ ## delete in db using mongoose
+
+ ```
+ const mongoose=require('mongoose')
+
+const deleteINdb=async()=>{
+    await mongoose.connect("mongodb://localhost:27017/harsh")
+    const itemsSchema=new mongoose.Schema({
+            name:String,
+            price:Number,
+            brand:String,
+            category:String  
+          })
+    const itemsModel=mongoose.model('items',itemsSchema)
+    let data=await itemsModel.deleteOne({name:"note5"})
+    console.log(data)
+        }
+
+        deleteINdb()
+ ```
+
+ ## find in db using mongoose
+
+ ```
+ const mongoose=require('mongoose')
+
+const findINdb=async()=>{
+    await mongoose.connect("mongodb://localhost:27017/harsh")
+    const itemsSchema=new mongoose.Schema({
+            name:String,
+            price:Number,
+            brand:String,
+            category:String  
+          })
+    const itemsModel=mongoose.model('items',itemsSchema)
+    let data=await itemsModel.find()
+    console.log(data)
+        }
+
+        findINdb() 
+ ```
+
+ # POST API USING MONGOOSE
+
+ * Make 3 files
+     * config.js:- in this we write the code to connect with mongodb using mongoose
+     * items.js:- in this we make models and schema
+     * api_mongoose.js: in this we send and receive data using api.
+config.js
+```
+const mongoose=require("mongoose")
+mongoose.connect('mongodb://localhost:27017/harsh')
+```
+
+items.js
+```
+const mongoose=require('mongoose')
+const itemsSchema=new mongoose.Schema({
+    name:String,
+    price:Number,
+    brand:String,
+    category:String
+})
+
+module.exports=mongoose.model('items',itemsSchema)
+
+```
+
+api_mongoose.js
+```
+const express=require('express')
+require('./config.js')
+const items=require('./items.js')
+
+const app=express()
+app.use(express.json())
+app.post("/create",async (req,res)=>{
+//     console.log(req.body)
+// res.send("Done")
+
+let data=new items(req.body)
+let result=await data.save()
+res.send(result)
+})
+
+app.listen(5000)
+```
+
+## get using mongoose
+```
+
+const express=require('express')
+require('./config.js')
+const items=require('./items.js')
+
+const app=express()
+
+app.get("/list",async (req,res)=>{
+    let data=await items.find()
+    res.send(data)
+})
+app.listen(5000)
+```
+
+## delete using mongoose
+```
+const express=require('express')
+require('./config.js')
+const items=require('./items.js')
+
+const app=express()
+
+app.delete("/delete/:_id",async (req,res)=>{
+    console.log(req.params)
+    let data=await items.deleteOne(req.params)
+    res.send("done")
+})
+app.listen(5000)
+
+
+```
+
+## update using mongoose
+
+```
+const express=require('express')
+require('./config.js')
+const items=require('./items.js')
+
+const app=express()
+app.use(express.json())
+
+app.put("/update/:_id",async (req,res)=>{
+    console.log(req.params) 
+    let data=await items.updateOne(
+        req.params,
+        {
+            $set: req.body
+        }
+    )
+     res.send(data)
+})
+app.listen(5000)
+
+
+```
+
+# Search api in Node js with MongoDB
+
+* use regex function for searching key values
+
+```
+const express=require('express')
+require("./config")
+const items=require("./items")
+const app=express()
+
+app.use(express.json())
+
+app.get("/search/:key",async (req,res)=>{
+    console.log(req.params.key)
+    let data=await items.find(
+  {
+      "$or":[
+          {"name":{$regex:req.params.key} },
+          {"brand":{$regex:req.params.key}}
+      ]
+  }
+)
+res.send(data)
+})
+ 
+app.listen(5000)
+```
+
+# EVENT AND EVENT EMITTER
+* On the backend side, Node.js offers us the option to build a similar system using the events module.
+
+* This module, in particular, offers the EventEmitter class, which we'll use to handle our events.
+    * emit is used to trigger an event
+    * on is used to add a callback function that's going to be executed when the event is triggered
+
+```
+const express=require("express")
+const EventEmitter=require("events")
+const app=express()
+
+let count=0
+const event=new EventEmitter()
+
+event.on("countAPI",()=>{
+    count++
+    console.log("hello",count)
+})
+
+app.get("/",(req,res)=>{
+     res.send("api called")
+     event.emit("countAPI")//generate event
+})
+app.get("/search",(req,res)=>{
+     res.send("api search")
+     event.emit("countAPI")//generate event
+})
+app.get("/update",(req,res)=>{
+     res.send("api update")
+     event.emit("countAPI")//generate event
+})
+
+app.listen(5000)
+```

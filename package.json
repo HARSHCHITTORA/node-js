@@ -1,0 +1,34 @@
+{
+  "name": "code_step-by-step",
+  "version": "1.0.0",
+  "description": "node js learning",
+  "main": "node1.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HARSHCHITTORA/node.js.git"
+  },
+  "keywords": [
+    "code",
+    "step",
+    "by",
+    "step"
+  ],
+  "author": "harsh chittora",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/HARSHCHITTORA/node.js/issues"
+  },
+  "homepage": "https://github.com/HARSHCHITTORA/node.js#readme",
+  "dependencies": {
+    "colors": "^1.4.0",
+    "ejs": "^3.1.6",
+    "express": "^4.17.3",
+    "mongodb": "^4.5.0",
+    "mongoose": "^6.3.0",
+    "multer": "^1.4.4",
+    "simple-node-logger": "^21.8.12"
+  }
+}
